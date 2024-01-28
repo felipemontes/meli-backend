@@ -24,3 +24,11 @@ POST   /conversation/add/:id
 GET    /conversation/:id
 ```
 
+## Save conversation
+![get](docs/save.png)
+
+## Add message
+![get](docs/post.png)
+
+## Get conversation
+![get](docs/get.png)
