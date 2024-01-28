@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -19,6 +20,10 @@ func main() {
 
 	repository := repository.NewRepository(client.Database("llmconversations"))
 
-	http.NewServer(repository)
+	server := http.NewServer(repository)
 
+	router := gin.Default()
+	{
+		router.POST("/conversation/save", server.SaveConversation)
+	}
 }
