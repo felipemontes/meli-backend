@@ -24,9 +24,9 @@ func main() {
 
 	router := gin.Default()
 	{
-		router.POST("/conversation/save", server.SaveConversation)
-		router.POST("/conversation/add/:id", server.AddMessage)
-		router.GET("/conversation/:id", server.GetConversation)
+		router.POST("/conversations/save", server.SaveConversation)
+		router.POST("/conversations/add/:id", server.AddMessage)
+		router.GET("/conversations/:id", server.GetConversation)
 	}
 
 	router.Run(":9080")

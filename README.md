@@ -19,9 +19,9 @@ go run .
 
 ## Endpoints:
 ```sh
-POST   /conversation/save
-POST   /conversation/add/:id
-GET    /conversation/:id
+POST   /conversations/save
+POST   /conversations/add/:id
+GET    /conversations/:id
 ```
 
 ## Save conversation
