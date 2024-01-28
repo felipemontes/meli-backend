@@ -42,3 +42,16 @@ func (r repository) GetConversation(ctx context.Context, id string) (model.Conve
 	}
 	return conver, nil
 }
+
+func (r repository) AddMessage(ctx context.Context, convID string, message model.Message) error {
+	res, err := r.db.
+		Collection("llmconversations").
+		UpdateOne(ctx, bson.M{"id": convID}, bson.M{"$push": bson.M{"Messages": message}})
+	if err != nil {
+		return err
+	}
+	if res.MatchedCount == 0 {
+		return utils.ErrConversationNotFound
+	}
+	return nil
+}

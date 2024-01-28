@@ -49,3 +49,22 @@ func (s Server) GetConversation(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"conversation": conver})
 }
+
+func (s Server) AddMessage(ctx *gin.Context) {
+	convID := ctx.Param("id")
+	if convID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid conversation id"})
+		return
+	}
+	var message model.Message
+	if err := ctx.ShouldBindJSON(&message); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body"})
+		return
+	}
+	err := s.repository.AddMessage(ctx, convID, message)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{})
+}
