@@ -1,8 +1,10 @@
 package http
 
 import (
+	"errors"
 	"meli-backend/model"
 	"meli-backend/repository"
+	"meli-backend/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,4 +30,22 @@ func (s Server) SaveConversation(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (s Server) GetConversation(ctx *gin.Context) {
+	convID := ctx.Param("id")
+	if convID == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "invalid conversation id"})
+		return
+	}
+	conver, err := s.repository.GetConversation(ctx, convID)
+	if err != nil {
+		if errors.Is(err, utils.ErrConversationNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+			return
+		}
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"conversation": conver})
 }
